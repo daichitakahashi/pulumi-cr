@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-xyz/provider
+module github.com/daichitakahashi/pulumi-cr/provider
 
 go 1.21
 
