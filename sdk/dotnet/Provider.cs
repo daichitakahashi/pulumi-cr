@@ -7,11 +7,15 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Xyz
+namespace Pulumi.Cr
 {
-    [XyzResourceType("pulumi:providers:xyz")]
+    [CrResourceType("pulumi:providers:cr")]
     public partial class Provider : global::Pulumi.ProviderResource
     {
+        [Output("cloudflareApiToken")]
+        public Output<string?> CloudflareApiToken { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a Provider resource with the given unique name, arguments, and options.
         /// </summary>
@@ -20,7 +24,7 @@ namespace Pulumi.Xyz
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("xyz", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
+            : base("cr", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -29,6 +33,10 @@ namespace Pulumi.Xyz
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
+                AdditionalSecretOutputs =
+                {
+                    "cloudflareApiToken",
+                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -39,6 +47,18 @@ namespace Pulumi.Xyz
 
     public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
+        [Input("cloudflareApiToken")]
+        private Input<string>? _cloudflareApiToken;
+        public Input<string>? CloudflareApiToken
+        {
+            get => _cloudflareApiToken;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _cloudflareApiToken = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
+
         public ProviderArgs()
         {
         }

@@ -5,6 +5,11 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { ModuleWorkerScriptArgs } from "./moduleWorkerScript";
+export type ModuleWorkerScript = import("./moduleWorkerScript").ModuleWorkerScript;
+export const ModuleWorkerScript: typeof import("./moduleWorkerScript").ModuleWorkerScript = null as any;
+utilities.lazyLoad(exports, ["ModuleWorkerScript"], () => require("./moduleWorkerScript"));
+
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
@@ -16,22 +21,33 @@ export const Random: typeof import("./random").Random = null as any;
 utilities.lazyLoad(exports, ["Random"], () => require("./random"));
 
 
+// Export sub-modules:
+import * as config from "./config";
+import * as types from "./types";
+
+export {
+    config,
+    types,
+};
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "xyz:index:Random":
+            case "cr:index:ModuleWorkerScript":
+                return new ModuleWorkerScript(name, <any>undefined, { urn })
+            case "cr:index:Random":
                 return new Random(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
-pulumi.runtime.registerResourceModule("xyz", "index", _module)
-pulumi.runtime.registerResourcePackage("xyz", {
+pulumi.runtime.registerResourceModule("cr", "index", _module)
+pulumi.runtime.registerResourcePackage("cr", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
-        if (type !== "pulumi:providers:xyz") {
+        if (type !== "pulumi:providers:cr") {
             throw new Error(`unknown provider type ${type}`);
         }
         return new Provider(name, <any>undefined, { urn });
