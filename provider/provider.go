@@ -37,7 +37,7 @@ func Provider() p.Provider {
 	// In this case, a single custom resource.
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
-			// infer.Resource[Random, RandomArgs, RandomState](),
+			infer.Resource[Random, RandomArgs, RandomState](),
 			infer.Resource[*ModuleWorkerScript, ModuleWorkerScriptArgs, ModuleWorkerScriptState](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
