@@ -15,9 +15,13 @@
 package provider
 
 import (
+	"errors"
 	"math/rand"
+	"os"
 	"time"
 
+	"github.com/cloudflare/cloudflare-go/v2"
+	"github.com/cloudflare/cloudflare-go/v2/option"
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
@@ -33,13 +37,39 @@ func Provider() p.Provider {
 	// In this case, a single custom resource.
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
-			infer.Resource[Random, RandomArgs, RandomState](),
+			// infer.Resource[Random, RandomArgs, RandomState](),
+			infer.Resource[*ModuleWorkerScript](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
 		},
+		Config: infer.Config[*Config](),
 	})
 }
+
+type Config struct {
+	APIToken string `pulumi:"apiToken" provider:"secret"`
+	client   *cloudflare.Client
+}
+
+func getConfig(ctx p.Context) *Config {
+	return infer.GetConfig[*Config](ctx)
+}
+
+// Configure implements infer.CustomConfigure.
+func (c *Config) Configure(ctx p.Context) error {
+	apiToken := c.APIToken
+	if apiToken == "" {
+		apiToken = os.Getenv("CLOUDFLARE_API_TOKEN")
+		if apiToken == "" {
+			return errors.New("api token not provided")
+		}
+	}
+	c.client = cloudflare.NewClient(option.WithAPIToken(apiToken))
+	return nil
+}
+
+var _ infer.CustomConfigure = (*Config)(nil)
 
 // Each resource has a controlling struct.
 // Resource behavior is determined by implementing methods on the controlling struct.
