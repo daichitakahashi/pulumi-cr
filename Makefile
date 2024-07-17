@@ -115,6 +115,7 @@ up::
 	pulumi stack init dev && \
 	pulumi stack select dev && \
 	pulumi config set name dev && \
+	pulumi config set --secret cr:cloudflareApiToken hoge && \
 	pulumi up -y
 
 down::
