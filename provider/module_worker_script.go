@@ -16,7 +16,6 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
-	"slices"
 
 	"github.com/cloudflare/cloudflare-go/v2"
 	"github.com/cloudflare/cloudflare-go/v2/workers"
@@ -195,7 +194,7 @@ func uploadModuleWorkerScript(ctx p.Context, input ModuleWorkerScriptArgs) (etag
 	}
 
 	// Check if `input.MailModule` is present.
-	found := slices.ContainsFunc(scriptFiles, func(f [2]string) bool {
+	found := contains(scriptFiles, func(f [2]string) bool {
 		return f[0] == input.MainModule
 	})
 	if !found {
