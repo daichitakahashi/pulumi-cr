@@ -38,7 +38,7 @@ func Provider() p.Provider {
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
 			// infer.Resource[Random, RandomArgs, RandomState](),
-			infer.Resource[*ModuleWorkerScript](),
+			infer.Resource[*ModuleWorkerScript, ModuleWorkerScriptArgs, ModuleWorkerScriptState](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
