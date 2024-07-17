@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"internal"
 )
@@ -15,24 +14,21 @@ import (
 type Provider struct {
 	pulumi.ProviderResourceState
 
-	ApiToken pulumi.StringOutput `pulumi:"apiToken"`
+	CloudflareApiToken pulumi.StringPtrOutput `pulumi:"cloudflareApiToken"`
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.
 func NewProvider(ctx *pulumi.Context,
 	name string, args *ProviderArgs, opts ...pulumi.ResourceOption) (*Provider, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &ProviderArgs{}
 	}
 
-	if args.ApiToken == nil {
-		return nil, errors.New("invalid value for required argument 'ApiToken'")
-	}
-	if args.ApiToken != nil {
-		args.ApiToken = pulumi.ToSecret(args.ApiToken).(pulumi.StringInput)
+	if args.CloudflareApiToken != nil {
+		args.CloudflareApiToken = pulumi.ToSecret(args.CloudflareApiToken).(pulumi.StringPtrInput)
 	}
 	secrets := pulumi.AdditionalSecretOutputs([]string{
-		"apiToken",
+		"cloudflareApiToken",
 	})
 	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
@@ -45,12 +41,12 @@ func NewProvider(ctx *pulumi.Context,
 }
 
 type providerArgs struct {
-	ApiToken string `pulumi:"apiToken"`
+	CloudflareApiToken *string `pulumi:"cloudflareApiToken"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
-	ApiToken pulumi.StringInput
+	CloudflareApiToken pulumi.StringPtrInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {
@@ -90,8 +86,8 @@ func (o ProviderOutput) ToProviderOutputWithContext(ctx context.Context) Provide
 	return o
 }
 
-func (o ProviderOutput) ApiToken() pulumi.StringOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.ApiToken }).(pulumi.StringOutput)
+func (o ProviderOutput) CloudflareApiToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.CloudflareApiToken }).(pulumi.StringPtrOutput)
 }
 
 func init() {

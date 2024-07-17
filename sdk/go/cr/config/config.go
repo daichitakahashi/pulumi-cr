@@ -11,6 +11,6 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
-func GetApiToken(ctx *pulumi.Context) string {
-	return config.Get(ctx, "cr:apiToken")
+func GetCloudflareApiToken(ctx *pulumi.Context) string {
+	return config.Get(ctx, "cr:cloudflareApiToken")
 }

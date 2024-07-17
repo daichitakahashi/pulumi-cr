@@ -48,8 +48,8 @@ func Provider() p.Provider {
 }
 
 type Config struct {
-	APIToken string `pulumi:"apiToken" provider:"secret"`
-	client   *cloudflare.Client
+	CloudflareAPIToken string `pulumi:"cloudflareApiToken,optional" provider:"secret"`
+	client             *cloudflare.Client
 }
 
 func getConfig(ctx p.Context) *Config {
@@ -58,14 +58,14 @@ func getConfig(ctx p.Context) *Config {
 
 // Configure implements infer.CustomConfigure.
 func (c *Config) Configure(ctx p.Context) error {
-	apiToken := c.APIToken
-	if apiToken == "" {
-		apiToken = os.Getenv("CLOUDFLARE_API_TOKEN")
-		if apiToken == "" {
+	cfAPIToken := c.CloudflareAPIToken
+	if cfAPIToken == "" {
+		cfAPIToken = os.Getenv("CLOUDFLARE_API_TOKEN")
+		if cfAPIToken == "" {
 			return errors.New("api token not provided")
 		}
 	}
-	c.client = cloudflare.NewClient(option.WithAPIToken(apiToken))
+	c.client = cloudflare.NewClient(option.WithAPIToken(cfAPIToken))
 	return nil
 }
 

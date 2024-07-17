@@ -9,5 +9,5 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
-apiToken: Optional[str]
+cloudflareApiToken: Optional[str]
 

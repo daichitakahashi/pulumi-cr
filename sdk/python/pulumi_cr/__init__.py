@@ -7,6 +7,7 @@ import typing
 # Export this package's modules as members:
 from .module_worker_script import *
 from .provider import *
+from .random import *
 from ._inputs import *
 from . import outputs
 
@@ -25,7 +26,8 @@ _utilities.register(
   "mod": "index",
   "fqn": "pulumi_cr",
   "classes": {
-   "cr:index:ModuleWorkerScript": "ModuleWorkerScript"
+   "cr:index:ModuleWorkerScript": "ModuleWorkerScript",
+   "cr:index:Random": "Random"
   }
  }
 ]

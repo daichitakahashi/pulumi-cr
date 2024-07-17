@@ -16,6 +16,6 @@ __config__ = pulumi.Config('cr')
 
 class _ExportableConfig(types.ModuleType):
     @property
-    def api_token(self) -> Optional[str]:
-        return __config__.get('apiToken')
+    def cloudflare_api_token(self) -> Optional[str]:
+        return __config__.get('cloudflareApiToken')
 

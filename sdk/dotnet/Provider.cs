@@ -12,8 +12,8 @@ namespace Pulumi.Cr
     [CrResourceType("pulumi:providers:cr")]
     public partial class Provider : global::Pulumi.ProviderResource
     {
-        [Output("apiToken")]
-        public Output<string> ApiToken { get; private set; } = null!;
+        [Output("cloudflareApiToken")]
+        public Output<string?> CloudflareApiToken { get; private set; } = null!;
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Pulumi.Cr
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Provider(string name, ProviderArgs args, CustomResourceOptions? options = null)
+        public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
             : base("cr", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -35,7 +35,7 @@ namespace Pulumi.Cr
                 Version = Utilities.Version,
                 AdditionalSecretOutputs =
                 {
-                    "apiToken",
+                    "cloudflareApiToken",
                 },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
@@ -47,15 +47,15 @@ namespace Pulumi.Cr
 
     public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
-        [Input("apiToken", required: true)]
-        private Input<string>? _apiToken;
-        public Input<string>? ApiToken
+        [Input("cloudflareApiToken")]
+        private Input<string>? _cloudflareApiToken;
+        public Input<string>? CloudflareApiToken
         {
-            get => _apiToken;
+            get => _cloudflareApiToken;
             set
             {
                 var emptySecret = Output.CreateSecret(0);
-                _apiToken = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+                _cloudflareApiToken = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
             }
         }
 

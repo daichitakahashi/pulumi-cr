@@ -32,11 +32,11 @@ namespace Pulumi.Cr
 
         private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("cr");
 
-        private static readonly __Value<string?> _apiToken = new __Value<string?>(() => __config.Get("apiToken"));
-        public static string? ApiToken
+        private static readonly __Value<string?> _cloudflareApiToken = new __Value<string?>(() => __config.Get("cloudflareApiToken"));
+        public static string? CloudflareApiToken
         {
-            get => _apiToken.Get();
-            set => _apiToken.Set(value);
+            get => _cloudflareApiToken.Get();
+            set => _cloudflareApiToken.Set(value);
         }
 
     }

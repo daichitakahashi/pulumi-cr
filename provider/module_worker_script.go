@@ -305,7 +305,7 @@ func uploadModuleWorkerScript(ctx p.Context, input ModuleWorkerScriptArgs) (etag
 		log.Fatal(err)
 	}
 	req.Header.Add("Content-Type", w.FormDataContentType())
-	req.Header.Add("Authorization", "Bearer "+config.APIToken)
+	req.Header.Add("Authorization", "Bearer "+config.CloudflareAPIToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
