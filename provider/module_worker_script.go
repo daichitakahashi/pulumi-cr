@@ -121,8 +121,7 @@ func (m *ModuleWorkerScript) Update(ctx p.Context, id string, olds ModuleWorkerS
 
 // Delete implements infer.CustomDelete.
 func (m *ModuleWorkerScript) Delete(ctx p.Context, id string, props ModuleWorkerScriptState) error {
-	config := getConfig(ctx)
-	cli := config.client
+	cli := getConfig(ctx).client
 	return cli.Workers.Scripts.Delete(ctx, props.Name, workers.ScriptDeleteParams{
 		AccountID: cloudflare.String(props.AccountID),
 	})
